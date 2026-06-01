@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+# IDE
+.idea/
+.vscode/
+# Benchmark outputs (regenerate locally)
+results/
+Results*/
+results_*/
+# OS
+Thumbs.db
+.DS_Store
+# Secrets
+.env
+*.key
