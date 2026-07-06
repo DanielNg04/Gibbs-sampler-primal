@@ -152,7 +152,7 @@ class QuantumGibbsSampler:
         d = self.H.shape[0]
         self.dim = d
 
-        jump_list = [prepare_matrix(A) for A in enumerate(jumps)]
+        jump_list = [prepare_matrix(A) for A in jumps]
 
         q = len(jump_list)
         self.num_jumps = q
