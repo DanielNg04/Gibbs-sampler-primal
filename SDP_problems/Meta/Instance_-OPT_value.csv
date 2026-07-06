@@ -1,0 +1,17 @@
+Instance, OPT_value;
+ThetaPrimeER23_red, -96.240038;
+ThetaPrimeER29_red, -136.97842;
+ThetaPrimeER31_red, -151.7024268;
+"control1, 1.778463e+01	";, 
+"control2, 8.300000e+00	";
+"control3, 1.363327e+01	";
+"control4, 1.979423e+01	";
+hinf1, 2.0326e+00;
+"hinf2, 1.0967e+01	";
+hinf3, 5.69e+01;
+"hinf4, 2.74764e+02	";
+hinf12, 3.601413369447465e-01;
+truss1, -8.999996e+00;
+truss2, -1.233804e+02;
+"truss3, -9.109996e+00	";
+truss4, -9.009996e+00;

@@ -439,6 +439,5 @@ class QuantumGibbsSampler:
         )
 
 
-# --- Diagnostics
 
 
