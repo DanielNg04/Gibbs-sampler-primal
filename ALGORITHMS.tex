@@ -1,0 +1,298 @@
+\documentclass[11pt]{article}
+
+% ---------------------------------------------------------------------------
+% Thesis-style description of the algorithms in "Gibbs sampler code Optimized"
+% and the quantities measured by run_test.py.
+% ---------------------------------------------------------------------------
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\PSD}{\succeq 0}
+\newcommand{\id}{\mathbb{I}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dist}{D_{\mathrm{tr}}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\title{A Quantum SDP Primal Oracle Driven by Discrete-Time Quantum
+Gibbs Sampling:\\ Implementation and Benchmark Design}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This note documents the algorithms in \texttt{Gibbs sampler code Optimized} and
+the benchmark driver \texttt{run\_test.py}. The code couples the SDP
+\emph{primal oracle} of van Apeldoorn and Gily\'en~\cite{vAG2019} with a
+classical simulation of the discrete-time quantum Gibbs sampler of Gily\'en,
+Chen, Doriguello and Kastoryano~\cite{GCDK2024}. At each oracle iteration a
+thermal state of a Hamiltonian built from the SDP data is prepared by iterating
+a CPTP channel; we measure how many channel applications are required to reach
+trace-distance tolerance. We describe the SDPA conversion (including a CVXPY
+dual solve for the trace bound~$R$), the oracle loop, the sampling channel, the
+distinction between jump operators and the initial state, and the four benchmark
+experiments.
+\end{abstract}
+
+\tableofcontents
+
+% ===========================================================================
+\section{Overview of the pipeline}
+% ===========================================================================
+
+\begin{enumerate}
+  \item \textbf{Conversion} (\texttt{sdp\_conversion.py}): SDPLIB \texttt{.dat-s}
+  files $\to$ oracle \texttt{.npz} instances. By default CVXPY solves the SDPA
+  dual to set $R=\text{margin}\cdot\Tr(Y^\star)$ (Section~\ref{sec:Rcvxpy}).
+  \item \textbf{Primal oracle} (\texttt{primal\_oracle\_quantum\_v1cube.py}):
+  one MMW feasibility test at calibrated threshold $g$
+  (Section~\ref{sec:oracle}).
+  \item \textbf{Gibbs sampler} (\texttt{gibbs\_sampler\_quantum\_v2cube.py}):
+  discrete-time channel toward $\rho\propto e^{-H}$ (Section~\ref{sec:gibbs}).
+  \item \textbf{Benchmark} (\texttt{run\_test.py}): $g$-calibration and
+  experiments 2.1.1--2.1.4 (Section~\ref{sec:measure}).
+\end{enumerate}
+
+Notation: $n$ = SDP matrix dimension; $M$ = number of oracle inequalities;
+channel dimension $d=n$.
+
+% ===========================================================================
+\section{Problem reformulation}
+\label{sec:conversion}
+% ===========================================================================
+
+\subsection{Source format (SDPA sparse)}
+Symmetric block-diagonal $F_0,\ldots,F_m$, objective $c\in\R^m$:
+\begin{align}
+\text{(P)}\quad & \min\; c^\top x
+  \quad\text{s.t.}\quad \textstyle\sum_i F_i x_i - F_0 = X \PSD,\\
+\text{(D)}\quad & \max_{Y\PSD}\; \Tr(F_0 Y)
+  \quad\text{s.t.}\quad \Tr(F_i Y)=c_i,\ i=1,\ldots,m .
+\end{align}
+Under strong duality, $\text{(P)}_{\mathrm{opt}}=\text{(D)}_{\mathrm{opt}}$; the
+metadata CSV lists this common value as \textsc{opt}.
+
+\subsection{Oracle form}
+Feasibility version of
+\begin{equation}
+\label{eq:oracleform}
+\max\; \Tr(CX)\quad\text{s.t.}\quad
+\Tr(A_j X)\le b_j,\ A_1=\id,\ b_1=R,\quad X\PSD .
+\end{equation}
+Dual reduction ($X$ plays the role of $Y$): $C=F_0$; each $\Tr(F_iY)=c_i$
+becomes $\Tr(F_iX)\le c_i$ and $\Tr(-F_iX)\le -c_i$; prepend $\Tr(X)\le R$.
+Constraint stack $[\id,F_1,-F_1,\ldots]$ with $M=1+2m$. The objective enters
+only inside the oracle as $A_0=-C$, $b_0=-g$.
+
+\subsection{Trace bound $R$ from the dual optimizer}
+\label{sec:Rcvxpy}
+
+The trace inequality is \emph{not} part of the SDPA dual. It is added so the
+oracle works on $X'=X/R$ with $\Tr(X')\le 1$. For the bound to be valid and as
+tight as possible we need $R\ge \Tr(Y^\star)$ for an optimal dual $Y^\star$.
+
+\paragraph{Default (CVXPY).}
+\texttt{sdp\_conversion.py} solves~\eqref{eq:oracleform} \emph{without} the
+trace constraint---i.e.\ the pure dual~(D)---using CVXPY:
+\begin{equation}
+\label{eq:dualsolve}
+\max_{Y\PSD}\ \Tr(F_0 Y)\quad\text{s.t.}\quad \Tr(F_i Y)=c_i .
+\end{equation}
+From the solution $Y^\star$ (symmetrized numerically),
+\begin{equation}
+\label{eq:Rcvxpy}
+R = R_{\mathrm{margin}}\cdot \Tr(Y^\star),
+\qquad R_{\mathrm{margin}}=1.1\ \text{(default)},
+\end{equation}
+and $\textsc{opt}_{\mathrm{cvxpy}}=\Tr(F_0 Y^\star)$ is stored as the reference
+optimum. Solvers are tried in order CLARABEL $\to$ SCS $\to$ ECOS. Conversion of
+all 15 current instances takes on the order of minutes (one-time cost).
+
+\paragraph{Why this is better than $R=2|\textsc{opt}|$.}
+The old heuristic conflated the \emph{objective value} with the \emph{trace} of
+the optimizer. There is no inequality $\Tr(Y^\star)\le 2|\textsc{opt}|$ in
+general. Examples from the converted set:
+\begin{itemize}
+  \item \texttt{hinf4}: $2|\textsc{opt}|\approx 550$ but $\Tr(Y^\star)\approx
+  66$, so $R$ drops from ${\sim}550$ to ${\sim}72$ and
+  $\theta=\eps/(2R)$ grows ${\sim}8\times$.
+  \item \texttt{ThetaPrimeER23}: $\Tr(Y^\star)$ is large (${\sim}7.5\times
+  10^4$), so $R$ is \emph{larger} than the old heuristic (${\sim}193$): the
+  certified ball is honest but $\theta$ remains small on those instances.
+\end{itemize}
+The CSV \textsc{opt} is retained as \texttt{opt\_csv} for cross-checking;
+\texttt{opt} prefers the solver value when available.
+
+\paragraph{Fallback and override.}
+If CVXPY fails: $R = R_{\mathrm{heur}}\cdot\max(|\textsc{opt}_{\mathrm{csv}}|,1)$
+with default $R_{\mathrm{heur}}=2$. \texttt{--R} forces a manual $R$ for all
+instances. \texttt{--no-R-from-solver} disables~\eqref{eq:dualsolve}.
+
+Stored fields per instance: \texttt{R}, \texttt{tr\_Y\_star}, \texttt{R\_source}
+(\texttt{cvxpy} / \texttt{heuristic} / \texttt{override}), \texttt{opt},
+\texttt{opt\_csv}.
+
+% ===========================================================================
+\section{The primal oracle}
+\label{sec:oracle}
+% ===========================================================================
+
+\subsection{Feasibility and Gibbs Hamiltonian}
+Threshold $g$ adds $A_0=-C$, $b_0=-g$. Dual weights $y\ge 0$ and
+\begin{equation}
+\theta=\frac{\eps}{2R},\qquad
+M=\sum_k y_k\,\tilde A_k,\qquad
+\rho_n=\frac{e^{-M}}{\Tr\,e^{-M}}.
+\end{equation}
+Paper schedule $T=\lceil\ln n/\theta^2\rceil$; the benchmark caps iterations via
+\texttt{--target-iters} and \texttt{--max-oracle-iters}.
+
+\subsection{$(n{+}1)$ embedding}
+Padded $\tilde\rho=\mathrm{diag}(X',\omega)$ with $\omega=1-\Tr(X')$ is used in
+the analysis, but block-diagonal jumps do not mix $\omega$. The channel runs on
+$\rho_n$; then
+$\omega=1/(Z_n+1)$, $X'=(1-\omega)\rho_n$ with stable $\log Z_n$.
+
+\subsection{Violation selection}
+$\theta$-feasible when $\max_k(\Tr(\tilde A_k X')-\tilde b_k)\le\theta$.
+Otherwise $y_j\mathrel{+}=\theta$, $M\mathrel{+}=\theta\tilde A_j$, with
+\texttt{max} (largest violation) or \texttt{random} (uniform over violated
+indices).
+
+\subsection{Gibbs modes}
+\begin{description}
+  \item[\texttt{exact}] $\rho_n=e^{-M}/\Tr\,e^{-M}$; used for $g$-calibration.
+  \item[\texttt{mcmc}] iterate $\mathcal{M}$ until
+  $\dist(\sigma,\rho_n)\le\theta$; benchmark cost.
+\end{description}
+Each oracle iteration restarts from $\sigma_0=\id/n$ (no warm start) so reported
+step counts are from-scratch mixing times at that iteration's $M$.
+
+% ===========================================================================
+\section{The discrete-time quantum Gibbs sampler}
+\label{sec:gibbs}
+% ===========================================================================
+
+\subsection{Target, jumps, and initial state (GCDK)}
+\label{sec:jumps-vs-init}
+
+Following~\cite{GCDK2024} (Theorem~1, Eq.~(5); coherent accept, Eq.~(11)):
+
+\begin{itemize}
+  \item \textbf{Hamiltonian $H=M$} sets the \emph{fixed point}
+  $\rho=e^{-\beta H}/\Tr(e^{-\beta H})$, $\beta=1$.
+  \item \textbf{Jump operators} $\{A_a\}$ (here: SDP objective $C$ and constraint
+  generators $F_i$, with $\id$ and redundant $\pm F_i$ dropped) define
+  \emph{which directions} in state space the channel can move. Each $A_a$ is
+  Bohr-reweighed in the energy basis of $H$ to $\tilde A_a$ enforcing detailed
+  balance w.r.t.\ $\rho$.
+  \item \textbf{Initial state $\sigma_0=\id/n$} is \emph{not} the proposal. It is
+  only the starting point of the Markov chain $\sigma_{k+1}=\mathcal{M}[\sigma_k]$.
+  The CPTP map $\mathcal{M}$ is built from $\{\tilde A_a\}$ and the reject Kraus
+  $K=(\id-\sum_a\tilde A_a^\dagger\tilde A_a)^{1/2}$; it does not depend on
+  $\sigma_0$. Stationarity is $\mathcal{M}[\rho]=\rho$; $\sigma_0$ affects only
+  transient length (steps to convergence).
+\end{itemize}
+
+\subsection{Channel and convergence}
+\begin{equation}
+\mathcal{M}[\sigma]=\sum_a \tilde A_a\sigma\tilde A_a^\dagger
++ K\sigma K^\dagger .
+\end{equation}
+\texttt{run\_until\_converged} applies $\mathcal{M}$ until
+$\dist(\sigma,\rho)\le\theta=\eps/(2R)$ or \texttt{gibbs\_max\_steps} is reached.
+Per-step trace renormalization stabilizes stiff $M$. Optional cutoffs
+$\{100,200,500\}$ snapshot $\sigma$ on the same trajectory for experiment~2.1.3.
+
+% ===========================================================================
+\section{Implementation choices}
+\label{sec:impl}
+% ===========================================================================
+
+\begin{description}
+  \item[CVXPY trace bound.] Default $R$ from~\eqref{eq:Rcvxpy}; certified
+  $\Tr(Y^\star)\le R$.
+  \item[Vectorized Bohr weights.] $w(\nu)=\tfrac12(1-\tanh(\nu/4))$ applied to
+  the full Bohr matrix by array ufuncs (no per-element \texttt{vectorize}).
+  \item[Parallel benchmark.] \texttt{run\_test.py} uses a process pool; each
+  worker pins BLAS to one thread; worker count hard-capped at 64 on shared hosts.
+  \item[Progress.] \texttt{tqdm} bars for calibration and oracle runs.
+\end{description}
+
+% ===========================================================================
+\section{Benchmark: what we measure}
+\label{sec:measure}
+% ===========================================================================
+
+\subsection{Calibration}
+Bisection on $g$ (exact Gibbs) so one feasibility run takes
+$\sim$\texttt{--target-iters} iterations (default 1000). No binary search at
+run time.
+
+\subsection{Experiments}
+Epsilon sweep: $\eps\in\{0.1,\,0.05,\,0.01\}$; reference $\eps=0.01$ for 2.1.3
+and 2.1.4.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}llll@{}}
+\toprule
+Exp. & Violation & $\eps$ & Quantity \\
+\midrule
+2.1.1 & max & $0.1,0.05,0.01$ & Gibbs steps $k_t$ per oracle iter (spike plot) \\
+2.1.2 & max & same & Wall-time pie (construction / channel / check / \ldots) \\
+2.1.3 & max & $0.01$ & $(\eps/R)\dist(\sigma^{(c)},\sigma^{\mathrm{full}})$ at cutoffs \\
+2.1.4 & random & $0.01$ & Class bars: avg max/mean steps, avg oracle iters \\
+\bottomrule
+\end{tabular}
+\caption{Benchmark outputs under \texttt{results/<instance>/} and
+\texttt{results/\_classes/}.}
+\end{table}
+
+\paragraph{Reading capped runs.}
+If $\theta$ is still unreachable within \texttt{gibbs\_max\_steps}, spikes
+flatline at the cap (lower bound on mixing time). After CVXPY $R$, this is less
+common on instances where $\Tr(Y^\star)\ll 2|\textsc{opt}|$; large-trace
+instances (e.g.\ \texttt{ThetaPrimeER}) may still require high caps or coarser
+$\eps$.
+
+% ===========================================================================
+\section{Parameters and pitfalls}
+\label{sec:params}
+% ===========================================================================
+
+\begin{description}
+  \item[$R$.] Prefer~\eqref{eq:Rcvxpy}. Re-convert after changing
+  \texttt{--R-margin}; delete old \texttt{results/} before re-benchmarking.
+  \item[$\theta=\eps/(2R)$.] Scales mixing difficulty as $1/R^2$ at fixed $\eps$.
+  \item[$g$.] Calibrates oracle \emph{iteration} count, not Gibbs steps per iter.
+  \item[Channel cap.] \texttt{--gibbs-max-steps} is the main runtime knob; must
+  exceed typical $k_t$ for informative 2.1.1 plots.
+\end{description}
+
+% ===========================================================================
+\begin{thebibliography}{9}
+\bibitem{vAG2019}
+J.~van Apeldoorn and A.~Gily\'en,
+\emph{Improvements in Quantum SDP-Solving with Applications},
+arXiv:1804.05058.
+
+\bibitem{GCDK2024}
+A.~Gily\'en, C.-F.~Chen, J.~F.~Doriguello and M.~J.~Kastoryano,
+\emph{Quantum generalizations of Glauber and Metropolis dynamics},
+arXiv:2405.20322.
+\end{thebibliography}
+
+\end{document}

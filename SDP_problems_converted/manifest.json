@@ -1,0 +1,98 @@
+[
+  {
+    "name": "control1",
+    "class": "control",
+    "n": 15,
+    "m_oracle": 43,
+    "R": 20.66308942659124,
+    "R_source": "cvxpy",
+    "tr_Y_star": 18.78462675144658,
+    "opt": 17.78462675144597,
+    "opt_csv": 17.78463,
+    "npz": "control1.npz"
+  },
+  {
+    "name": "control2",
+    "class": "control",
+    "n": 30,
+    "m_oracle": 133,
+    "R": 10.230055946523164,
+    "R_source": "cvxpy",
+    "tr_Y_star": 9.300050860475602,
+    "opt": 8.300050861281921,
+    "opt_csv": 8.3,
+    "npz": "control2.npz"
+  },
+  {
+    "name": "hinf1",
+    "class": "hinf",
+    "n": 14,
+    "m_oracle": 27,
+    "R": 6.660207072316427,
+    "R_source": "cvxpy",
+    "tr_Y_star": 6.0547337021058425,
+    "opt": 2.032599853038904,
+    "opt_csv": 2.0326,
+    "npz": "hinf1.npz"
+  },
+  {
+    "name": "hinf12",
+    "class": "hinf",
+    "n": 24,
+    "m_oracle": 87,
+    "R": 1.1002430233146432,
+    "R_source": "cvxpy",
+    "tr_Y_star": 1.0002209302860392,
+    "opt": 0.3601413369447465,
+    "opt_csv": null,
+    "npz": "hinf12.npz"
+  },
+  {
+    "name": "hinf4",
+    "class": "hinf",
+    "n": 16,
+    "m_oracle": 27,
+    "R": 72.46572002897548,
+    "R_source": "cvxpy",
+    "tr_Y_star": 65.87792729906862,
+    "opt": 274.7638708888734,
+    "opt_csv": 274.764,
+    "npz": "hinf4.npz"
+  },
+  {
+    "name": "truss1",
+    "class": "truss",
+    "n": 13,
+    "m_oracle": 13,
+    "R": 20.899991527474718,
+    "R_source": "cvxpy",
+    "tr_Y_star": 18.99999229770429,
+    "opt": -8.999996148852144,
+    "opt_csv": -8.999996,
+    "npz": "truss1.npz"
+  },
+  {
+    "name": "truss3",
+    "class": "truss",
+    "n": 31,
+    "m_oracle": 55,
+    "R": 51.20497647206527,
+    "R_source": "cvxpy",
+    "tr_Y_star": 46.549978610968424,
+    "opt": -9.109995722193684,
+    "opt_csv": -9.109996,
+    "npz": "truss3.npz"
+  },
+  {
+    "name": "truss4",
+    "class": "truss",
+    "n": 19,
+    "m_oracle": 25,
+    "R": 30.83298712766668,
+    "R_source": "cvxpy",
+    "tr_Y_star": 28.0299882978788,
+    "opt": -9.00999609929293,
+    "opt_csv": -9.009996,
+    "npz": "truss4.npz"
+  }
+]
