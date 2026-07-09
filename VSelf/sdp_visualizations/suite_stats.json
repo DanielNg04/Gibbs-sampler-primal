@@ -1,0 +1,3034 @@
+[
+  {
+    "instance": "hinf12",
+    "n": 24,
+    "m_sdpa": 43,
+    "m_oracle": 87,
+    "block_sizes": [
+      6,
+      6,
+      12
+    ],
+    "n_blocks": 3,
+    "R": 1.1002430233146432,
+    "opt": 0.3601413369447465,
+    "C": {
+      "label": "C (objective)",
+      "shape": [
+        24,
+        24
+      ],
+      "nnz": 38,
+      "density": 0.06597222222222222,
+      "max_abs": 23.593524969138223,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "oracle_union": {
+      "label": "oracle union",
+      "shape": [
+        24,
+        24
+      ],
+      "nnz": 154,
+      "density": 0.2673611111111111,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "sdpa_union": {
+      "label": "SDPA union",
+      "shape": [
+        24,
+        24
+      ],
+      "nnz": 154,
+      "density": 0.2673611111111111,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "generator_union": {
+      "label": "generator union",
+      "shape": [
+        24,
+        24
+      ],
+      "nnz": 154,
+      "density": 0.2673611111111111,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "sdpa_matrices": [
+      {
+        "label": "F_0",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 38,
+        "density": 0.06597222222222222,
+        "max_abs": 23.593524969138223,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_1",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 44,
+        "density": 0.0763888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_2",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 10,
+        "density": 0.017361111111111112,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_3",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_4",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_5",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_6",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_7",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_8",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_9",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_10",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_11",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_12",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_13",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_14",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_15",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_16",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_17",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_18",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_19",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_20",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_21",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_22",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_23",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 8,
+        "density": 0.013888888888888888,
+        "max_abs": 6.029263064262789,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_24",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 5.051069121340783,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_25",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_26",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 5.863702326954984,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_27",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 1.3695630922880806,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_28",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 1.4406024417331502,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_29",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 11.803351162881556,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_30",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 11.419804938151287,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_31",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 12.501603621514514,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_32",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 9.928654874339053,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_33",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 4.7152152775296665,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_34",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 2.309875560949532,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_35",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 1.2183458782532552,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_36",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 9.835036985696679,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_37",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 1.2852692654199003,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_38",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 13.658041684203157,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_39",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 12.891611829705429,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_40",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 15.14861456964977,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_41",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 16.378232351663243,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_42",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 7.783250071677861,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_43",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 14.47360787342919,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      }
+    ],
+    "oracle_matrices": [
+      {
+        "label": "A[0]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 24,
+        "density": 0.041666666666666664,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[1]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 44,
+        "density": 0.0763888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[2]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 44,
+        "density": 0.0763888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[3]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 10,
+        "density": 0.017361111111111112,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[4]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 10,
+        "density": 0.017361111111111112,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[5]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[6]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[7]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[8]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[9]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[10]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[11]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[12]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[13]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[14]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[15]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[16]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[17]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[18]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[19]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[20]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[21]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[22]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[23]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[24]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[25]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[26]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[27]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[28]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[29]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[30]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[31]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[32]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[33]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[34]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[35]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[36]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[37]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[38]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[39]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[40]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[41]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[42]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 27,
+        "density": 0.046875,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[43]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[44]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 26,
+        "density": 0.04513888888888889,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[45]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 8,
+        "density": 0.013888888888888888,
+        "max_abs": 6.029263064262789,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[46]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 8,
+        "density": 0.013888888888888888,
+        "max_abs": 6.029263064262789,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[47]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 5.051069121340783,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[48]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 5.051069121340783,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[49]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[50]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[51]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 5.863702326954984,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[52]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 5.863702326954984,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[53]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 1.3695630922880806,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[54]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 1.3695630922880806,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[55]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 1.4406024417331502,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[56]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 1.4406024417331502,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[57]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 11.803351162881556,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[58]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 11.803351162881556,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[59]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 11.419804938151287,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[60]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 11.419804938151287,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[61]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 12.501603621514514,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[62]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 12.501603621514514,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[63]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 9.928654874339053,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[64]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 9.928654874339053,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[65]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 4.7152152775296665,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[66]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 4.7152152775296665,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[67]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 2.309875560949532,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[68]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 2.309875560949532,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[69]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 1.2183458782532552,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[70]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 1.2183458782532552,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[71]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 9.835036985696679,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[72]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 9.835036985696679,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[73]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 1.2852692654199003,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[74]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 1.2852692654199003,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[75]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 13.658041684203157,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[76]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 13.658041684203157,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[77]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 12.891611829705429,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[78]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 12.891611829705429,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[79]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 15.14861456964977,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[80]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 15.14861456964977,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[81]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 16.378232351663243,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[82]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 16.378232351663243,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[83]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 7.783250071677861,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[84]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 18,
+        "density": 0.03125,
+        "max_abs": 7.783250071677861,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[85]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 14.47360787342919,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[86]",
+        "shape": [
+          24,
+          24
+        ],
+        "nnz": 17,
+        "density": 0.029513888888888888,
+        "max_abs": 14.47360787342919,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      }
+    ]
+  },
+  {
+    "instance": "hinf1",
+    "n": 14,
+    "m_sdpa": 13,
+    "m_oracle": 27,
+    "block_sizes": [
+      4,
+      4,
+      6
+    ],
+    "n_blocks": 3,
+    "R": 6.660207072316427,
+    "opt": 2.032599853038904,
+    "C": {
+      "label": "C (objective)",
+      "shape": [
+        14,
+        14
+      ],
+      "nnz": 18,
+      "density": 0.09183673469387756,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "oracle_union": {
+      "label": "oracle union",
+      "shape": [
+        14,
+        14
+      ],
+      "nnz": 56,
+      "density": 0.2857142857142857,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "sdpa_union": {
+      "label": "SDPA union",
+      "shape": [
+        14,
+        14
+      ],
+      "nnz": 56,
+      "density": 0.2857142857142857,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "generator_union": {
+      "label": "generator union",
+      "shape": [
+        14,
+        14
+      ],
+      "nnz": 56,
+      "density": 0.2857142857142857,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "sdpa_matrices": [
+      {
+        "label": "F_0",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 18,
+        "density": 0.09183673469387756,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_1",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 20,
+        "density": 0.10204081632653061,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_2",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 6,
+        "density": 0.030612244897959183,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_3",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_4",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 10,
+        "density": 0.05102040816326531,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_5",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_6",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_7",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 10,
+        "density": 0.05102040816326531,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_8",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 6,
+        "density": 0.030612244897959183,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_9",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_10",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 10,
+        "density": 0.05102040816326531,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_11",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_12",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_13",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 10,
+        "density": 0.05102040816326531,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      }
+    ],
+    "oracle_matrices": [
+      {
+        "label": "A[0]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 14,
+        "density": 0.07142857142857142,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[1]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 20,
+        "density": 0.10204081632653061,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[2]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 20,
+        "density": 0.10204081632653061,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[3]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 6,
+        "density": 0.030612244897959183,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[4]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 6,
+        "density": 0.030612244897959183,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[5]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[6]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[7]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 10,
+        "density": 0.05102040816326531,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[8]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 10,
+        "density": 0.05102040816326531,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[9]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[10]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[11]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[12]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[13]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 10,
+        "density": 0.05102040816326531,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[14]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 10,
+        "density": 0.05102040816326531,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[15]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 6,
+        "density": 0.030612244897959183,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[16]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 6,
+        "density": 0.030612244897959183,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[17]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[18]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[19]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 10,
+        "density": 0.05102040816326531,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[20]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 10,
+        "density": 0.05102040816326531,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[21]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[22]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[23]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[24]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 11,
+        "density": 0.05612244897959184,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[25]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 10,
+        "density": 0.05102040816326531,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[26]",
+        "shape": [
+          14,
+          14
+        ],
+        "nnz": 10,
+        "density": 0.05102040816326531,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      }
+    ]
+  },
+  {
+    "instance": "truss1",
+    "n": 13,
+    "m_sdpa": 6,
+    "m_oracle": 13,
+    "block_sizes": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      1
+    ],
+    "n_blocks": 7,
+    "R": 20.899991527474718,
+    "opt": -8.999996148852144,
+    "C": {
+      "label": "C (objective)",
+      "shape": [
+        13,
+        13
+      ],
+      "nnz": 1,
+      "density": 0.005917159763313609,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "oracle_union": {
+      "label": "oracle union",
+      "shape": [
+        13,
+        13
+      ],
+      "nnz": 23,
+      "density": 0.13609467455621302,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "sdpa_union": {
+      "label": "SDPA union",
+      "shape": [
+        13,
+        13
+      ],
+      "nnz": 23,
+      "density": 0.13609467455621302,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "generator_union": {
+      "label": "generator union",
+      "shape": [
+        13,
+        13
+      ],
+      "nnz": 23,
+      "density": 0.13609467455621302,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "sdpa_matrices": [
+      {
+        "label": "F_0",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 1,
+        "density": 0.005917159763313609,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_1",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_2",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 1.000001,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_3",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_4",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 0.9999993999999999,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_5",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_6",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 7,
+        "density": 0.04142011834319527,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      }
+    ],
+    "oracle_matrices": [
+      {
+        "label": "A[0]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 13,
+        "density": 0.07692307692307693,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[1]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[2]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[3]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 1.000001,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[4]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 1.000001,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[5]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[6]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[7]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 0.9999993999999999,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[8]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 0.9999993999999999,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[9]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[10]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 6,
+        "density": 0.03550295857988166,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[11]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 7,
+        "density": 0.04142011834319527,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[12]",
+        "shape": [
+          13,
+          13
+        ],
+        "nnz": 7,
+        "density": 0.04142011834319527,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      }
+    ]
+  },
+  {
+    "instance": "truss4",
+    "n": 19,
+    "m_sdpa": 12,
+    "m_oracle": 25,
+    "block_sizes": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      1
+    ],
+    "n_blocks": 7,
+    "R": 30.83298712766668,
+    "opt": -9.00999609929293,
+    "C": {
+      "label": "C (objective)",
+      "shape": [
+        19,
+        19
+      ],
+      "nnz": 1,
+      "density": 0.002770083102493075,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "oracle_union": {
+      "label": "oracle union",
+      "shape": [
+        19,
+        19
+      ],
+      "nnz": 51,
+      "density": 0.14127423822714683,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "sdpa_union": {
+      "label": "SDPA union",
+      "shape": [
+        19,
+        19
+      ],
+      "nnz": 51,
+      "density": 0.14127423822714683,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "generator_union": {
+      "label": "generator union",
+      "shape": [
+        19,
+        19
+      ],
+      "nnz": 51,
+      "density": 0.14127423822714683,
+      "max_abs": 1.0,
+      "cross_block_nnz": 0,
+      "cross_block_fraction": 0.0
+    },
+    "sdpa_matrices": [
+      {
+        "label": "F_0",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 1,
+        "density": 0.002770083102493075,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_1",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_2",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.000001,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_3",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_4",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 0.9999993999999999,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_5",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_6",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.000001,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_7",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_8",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 0.9999993999999999,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_9",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_10",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 7,
+        "density": 0.019390581717451522,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_11",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 12,
+        "density": 0.0332409972299169,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "F_12",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 7,
+        "density": 0.019390581717451522,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      }
+    ],
+    "oracle_matrices": [
+      {
+        "label": "A[0]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 19,
+        "density": 0.05263157894736842,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[1]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[2]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[3]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.000001,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[4]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.000001,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[5]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[6]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[7]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 0.9999993999999999,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[8]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 0.9999993999999999,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[9]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[10]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[11]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.000001,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[12]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.000001,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[13]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[14]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[15]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 0.9999993999999999,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[16]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 0.9999993999999999,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[17]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[18]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 6,
+        "density": 0.01662049861495845,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[19]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 7,
+        "density": 0.019390581717451522,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[20]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 7,
+        "density": 0.019390581717451522,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[21]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 12,
+        "density": 0.0332409972299169,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[22]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 12,
+        "density": 0.0332409972299169,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[23]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 7,
+        "density": 0.019390581717451522,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      },
+      {
+        "label": "A[24]",
+        "shape": [
+          19,
+          19
+        ],
+        "nnz": 7,
+        "density": 0.019390581717451522,
+        "max_abs": 1.0,
+        "cross_block_nnz": 0,
+        "cross_block_fraction": 0.0
+      }
+    ]
+  }
+]

@@ -46,9 +46,7 @@ def trace_distance(rho: np.ndarray, sigma: np.ndarray) -> float:
     Trace distance D(ρ, σ) = ½‖ρ − σ‖₁ for symmetric matrices.
 
     Stability: the difference is validated as symmetric (``validate_matrix``)
-    and passed to ``eigvalsh``. Eigenvalues of a symmetric matrix are perfectly
-    conditioned (Weyl's inequality: a perturbation of norm ε moves every
-    eigenvalue by ≤ ε), so the computed trace norm carries no amplified error.
+    and passed to ``eigvalsh``.
     Speed: one O(d³) LAPACK eigenvalue call — the trace norm genuinely needs the
     spectrum, so this is minimal; ``eigvalsh`` skips the eigenvector work that a
     full ``eigh`` would do.
@@ -120,8 +118,6 @@ def jumps_from_symmetric_matrices(
         if normalize and nrm > zero_tol:
             A = A / nrm
         out.append(np.ascontiguousarray(A))
-    if not out:
-        raise ValueError("No usable (non-zero) jump matrices were provided.")
     return out
 
 
