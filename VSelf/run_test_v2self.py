@@ -11,11 +11,13 @@ Pipeline (same shape as the full ``run_test.py``, reduced to its essentials):
 3. Run the primal oracle in MCMC mode (channel-based Gibbs preparation).
 4. Plot Gibbs channel steps per oracle iteration and save the raw run JSON.
 
-The instance list holds the smallest converted problems, ordered by estimated
-cost (iterations ≈ (θ_hinf1/θ)² × 3131, per-iteration cost ~ n³ from the
-measured hinf1 baseline). truss3 (θ ≈ 1e-3, n = 31) and hinf4 (θ ≈ 7e-4)
-already project to 10+ minutes each and are left out. A wall-clock budget
-skips remaining instances instead of overrunning.
+The instance list holds every converted problem that finishes at g_lo within
+the budget (measured by exact-mode probes): hinf12 ~6 s, hinf1 ~6 s,
+truss1 ~52 s, truss4 ~105 s. Excluded because θ = ε/(2R) makes them run for
+hours at this precision: hinf2/hinf3/hinf4 (θ ≤ 1e-4), truss2/truss3
+(θ ≈ 1e-3), and control1/control2 (not θ-feasible at g_lo even after 200k
+exact-mode iterations). A wall-clock budget additionally skips remaining
+instances instead of overrunning.
 
 Single process: BLAS keeps all its threads (no pinning — that is only needed
 when fanning out worker processes).
@@ -32,7 +34,7 @@ from primal_oracle_quantum_v2self import PrimalOracleProblem, run_primal_oracle
 
 # --- Configuration (constants for now; grow into CLI arguments later) ---
 
-INSTANCES = ["hinf12", "hinf1", "control2", "truss1", "control1", "truss4"]
+INSTANCES = ["hinf12", "hinf1", "truss1", "truss4"]
 TIME_BUDGET_S = 12 * 60        # stop starting new instances past this wall time
 EPSILON = 0.1                  # SDP precision ε; oracle tolerance θ = ε/(2R)
 MAX_ORACLE_ITERS = 200_000     # cap on primal-oracle iterations (θ can be ~2e-3)

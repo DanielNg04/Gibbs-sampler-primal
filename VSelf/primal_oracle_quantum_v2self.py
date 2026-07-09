@@ -5,8 +5,8 @@ Primal-oracle feasibility loop with exact or MCMC Gibbs preparation
 (``gibbs_sampler_quantum_v4self``).
 
 VSelf conventions:
-- Every matrix is real symmetric float64. Inputs are symmetrized once at the
-  boundary (``prepare_matrix``) and trusted everywhere after — no repeated
+- Every matrix is real symmetric float64. Inputs are validated once at the
+  boundary (``validate_matrix``) and trusted everywhere after — no repeated
   shape/symmetry assertions, no complex handling.
 - The oracle answers: is there X ⪰ 0 with Tr(A_j X) ≤ b_j (A_1 = I, b_1 = R)
   and Tr(CX) ≥ g? It maintains dual-style weights y ≥ 0, prepares the Gibbs
@@ -28,8 +28,8 @@ import scipy.linalg as la
 from gibbs_sampler_quantum_v4self import (
     QuantumGibbsSampler,
     jumps_from_symmetric_matrices,
-    prepare_matrix,
     trace_distance,
+    validate_matrix,
 )
 
 DTYPE = np.float64
@@ -52,9 +52,10 @@ class PrimalOracleProblem:
     R: float                       # trace bound (= b_1)
     g: float                       # objective threshold; b_0 = −g for A_0 = −C
 
+    #Checks, corrections
     def __post_init__(self) -> None:
-        self.C = prepare_matrix(self.C)
-        self.A_matrices = [prepare_matrix(A) for A in self.A_matrices]
+        self.C = validate_matrix(self.C)
+        self.A_matrices = [validate_matrix(A) for A in self.A_matrices]
         self.b = np.asarray(self.b, dtype=DTYPE).reshape(-1)
         self.R = float(self.R)
         self.g = float(self.g)
