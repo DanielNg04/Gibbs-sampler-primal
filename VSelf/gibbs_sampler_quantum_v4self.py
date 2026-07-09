@@ -16,16 +16,17 @@ from dataclasses import dataclass
 DTYPE = np.float64
 
 # --- Small Linear Algebra Utilities ---
-def _symmetrize(M: np.ndarray) -> np.ndarray:
-    return (M + M.T) * 0.5
+def validate_matrix(H: np.ndarray) -> np.ndarray:
 
-def prepare_matrix(H: np.ndarray) -> np.ndarray:
     #Store in contiguous array
     A = np.ascontiguousarray(H, dtype=DTYPE)
 
-    #If not symmetric, symmetrize
-    if not np.allclose(A, A.T):
-        A = _symmetrize(A)
+    #Flag non-symmetric matrices
+    asym = float(np.max(np.abs(A - A.T))) if A.size else 0.0
+    if asym > 1e-10:
+        raise ValueError(
+            f"validate_matrix: input is not symmetric (max |A - A^T| = {asym:.3e})."
+        )
     return A
 
 def coherent_S_minus_weight(nu: np.ndarray) -> np.ndarray:
@@ -44,15 +45,13 @@ def trace_distance(rho: np.ndarray, sigma: np.ndarray) -> float:
     """
     Trace distance D(ρ, σ) = ½‖ρ − σ‖₁ for symmetric matrices.
 
-    Stability: the difference is symmetrized and passed to ``eigvalsh``.
-    Eigenvalues of a symmetric matrix are perfectly conditioned (Weyl's
-    inequality: a perturbation of norm ε moves every eigenvalue by ≤ ε), so the
-    computed trace norm carries no amplified error.
+    Stability: the difference is validated as symmetric (``validate_matrix``)
+    and passed to ``eigvalsh``.
     Speed: one O(d³) LAPACK eigenvalue call — the trace norm genuinely needs the
     spectrum, so this is minimal; ``eigvalsh`` skips the eigenvector work that a
     full ``eigh`` would do.
     """
-    d = _symmetrize(np.asarray(rho, dtype=DTYPE) - np.asarray(sigma, dtype=DTYPE))
+    d = validate_matrix(np.asarray(rho, dtype=DTYPE) - np.asarray(sigma, dtype=DTYPE))
     return float(0.5 * np.sum(np.abs(la.eigvalsh(d, check_finite=False))))
 
 
@@ -112,15 +111,13 @@ def jumps_from_symmetric_matrices(
     """
     out: List[np.ndarray] = []
     for k, M in enumerate(mats):
-        A = prepare_matrix(M)
+        A = validate_matrix(M)
         nrm = float(np.linalg.norm(A))
         if drop_zero and nrm <= zero_tol:
             continue
         if normalize and nrm > zero_tol:
             A = A / nrm
         out.append(np.ascontiguousarray(A))
-    if not out:
-        raise ValueError("No usable (non-zero) jump matrices were provided.")
     return out
 
 
@@ -148,11 +145,11 @@ class QuantumGibbsSampler:
         self.verbose = bool(verbose)
 
         #Prepare H and A_j jump matrices.
-        self.H = prepare_matrix(H)
+        self.H = validate_matrix(H)
         d = self.H.shape[0]
         self.dim = d
 
-        jump_list = [prepare_matrix(A) for A in jumps]
+        jump_list = [validate_matrix(A) for A in jumps]
 
         q = len(jump_list)
         self.num_jumps = q
@@ -177,7 +174,7 @@ class QuantumGibbsSampler:
         probs = w / Z_scaled
 
         # ρ = U diag(p) Uᵀ --> (O(d²)) + one GEMM
-        self.rho = _symmetrize((U * probs) @ U.T)
+        self.rho = validate_matrix((U * probs) @ U.T)
 
         #Calculate condition number for diagnostics
         self.rho_min_eig = float(np.min(probs))
@@ -196,11 +193,11 @@ class QuantumGibbsSampler:
             # tensordot contracts D_jl = Σ_{a,i} Ã[a,i,j] Ã[a,i,l] as ONE large GEMM of shape (d, q·d)·(q·d, d)
             # As a Gram matrix the result is symmetric PSD by construction (stable — no cancellation can make it indefinite beyond rounding).
             # Rescaling by c multiplies D by c² exactly, so D and its eigenvalues are updated in place instead of being recomputed.
-        D_E = _symmetrize(np.tensordot(accept_E, accept_E, axes=([0, 1], [0, 1])))
+        D_E = validate_matrix(np.tensordot(accept_E, accept_E, axes=([0, 1], [0, 1])))
 
         ev_D = la.eigvalsh(D_E, check_finite=False)
         lam_max = float(ev_D[-1])
-        target = max(0.0, 1.0 - float(rescale_margin))
+        target = 1.0 - float(rescale_margin)
         if lam_max > target:
             c = math.sqrt(target / lam_max)
             accept_E *= c
@@ -229,7 +226,7 @@ class QuantumGibbsSampler:
 
         sqrt_p = np.sqrt(probs)
         inv_sqrt_p = 1.0 / np.sqrt(np.maximum(probs, self.psd_eps))
-        M = _symmetrize(sqrt_p[:, None] * (np.eye(d) - D_E) * sqrt_p[None, :])
+        M = validate_matrix(sqrt_p[:, None] * (np.eye(d) - D_E) * sqrt_p[None, :])
         w_M, v_M = la.eigh(M, driver="evd", check_finite=False)
 
         if float(w_M[0]) < -1e-8:
@@ -248,7 +245,7 @@ class QuantumGibbsSampler:
         self.kraus_stack = np.ascontiguousarray(U @ kraus_E @ U.T, dtype=DTYPE)
         self.accept_kraus = self.kraus_stack[:q]
         self.reject_kraus = self.kraus_stack[q]
-        self.D_accept = _symmetrize(U @ D_E @ U.T)
+        self.D_accept = validate_matrix(U @ D_E @ U.T)
 
         if self.verbose:
             print(
@@ -272,15 +269,17 @@ class QuantumGibbsSampler:
            operators fused into the GEMM.
 
         Stability: every product is a plain GEMM (componentwise backward stable);
-        the final symmetrization removes the O(eps) asymmetry so iterated states
-        stay in the symmetric cone and downstream ``eigvalsh`` calls stay exact.
+        the Kraus structure maps symmetric input to symmetric output up to O(eps)
+        rounding. The optional per-step symmetrization (the only place in this
+        module that repairs instead of validates) resets that rounding asymmetry
+        so it cannot accumulate over long channel iterations.
         """
         if symmetrize_output is None:
             symmetrize_output = self.symmetrize_output
         sigma = np.ascontiguousarray(sigma, dtype=DTYPE)
         tmp = self.kraus_stack @ sigma
         out = np.tensordot(tmp, self.kraus_stack, axes=([0, 2], [0, 2]))
-        return _symmetrize(out) if symmetrize_output else out
+        return (out + out.T) * 0.5 if symmetrize_output else out
 
     def apply_channel(self, sigma: np.ndarray, check: bool = False) -> np.ndarray:
         """
@@ -288,7 +287,7 @@ class QuantumGibbsSampler:
         inside loops — the validation here costs an extra O(d²), and the optional
         ``check`` adds an O(d³) eigenvalue scan).
         """
-        sigma = prepare_matrix(sigma)
+        sigma = validate_matrix(sigma)
 
         out = self._apply_channel_fast(sigma)
 
@@ -307,7 +306,7 @@ class QuantumGibbsSampler:
     def _coerce_state(self, sigma0: np.ndarray) -> np.ndarray:
         """Symmetrize and trace-normalize an initial state (boundary only)."""
 
-        sigma = prepare_matrix(sigma0)
+        sigma = validate_matrix(sigma0)
         tr = float(np.trace(sigma))
         if abs(tr - 1.0) > 1e-6 and tr > 0.0:
             sigma = sigma / tr

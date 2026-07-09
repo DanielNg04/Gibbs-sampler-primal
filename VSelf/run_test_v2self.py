@@ -11,11 +11,13 @@ Pipeline (same shape as the full ``run_test.py``, reduced to its essentials):
 3. Run the primal oracle in MCMC mode (channel-based Gibbs preparation).
 4. Plot Gibbs channel steps per oracle iteration and save the raw run JSON.
 
-The instance list holds the smallest converted problems, ordered by estimated
-cost (iterations ≈ (θ_hinf1/θ)² × 3131, per-iteration cost ~ n³ from the
-measured hinf1 baseline). truss3 (θ ≈ 1e-3, n = 31) and hinf4 (θ ≈ 7e-4)
-already project to 10+ minutes each and are left out. A wall-clock budget
-skips remaining instances instead of overrunning.
+The instance list holds every converted problem that finishes at g_lo within
+the budget (measured by exact-mode probes): hinf12 ~6 s, hinf1 ~6 s,
+truss1 ~52 s, truss4 ~105 s. Excluded because θ = ε/(2R) makes them run for
+hours at this precision: hinf2/hinf3/hinf4 (θ ≤ 1e-4), truss2/truss3
+(θ ≈ 1e-3), and control1/control2 (not θ-feasible at g_lo even after 200k
+exact-mode iterations). A wall-clock budget additionally skips remaining
+instances instead of overrunning.
 
 Single process: BLAS keeps all its threads (no pinning — that is only needed
 when fanning out worker processes).
@@ -32,12 +34,18 @@ from primal_oracle_quantum_v2self import PrimalOracleProblem, run_primal_oracle
 
 # --- Configuration (constants for now; grow into CLI arguments later) ---
 
-INSTANCES = ["hinf12", "hinf1", "control2", "truss1", "control1", "truss4"]
+INSTANCES = ["hinf12", "hinf1", "truss1", "truss4"]
 TIME_BUDGET_S = 12 * 60        # stop starting new instances past this wall time
 EPSILON = 0.1                  # SDP precision ε; oracle tolerance θ = ε/(2R)
 MAX_ORACLE_ITERS = 200_000     # cap on primal-oracle iterations (θ can be ~2e-3)
 GIBBS_MAX_STEPS = 2_000        # cap on channel applications per Gibbs preparation
 GIBBS_WARM_START = True        # start each channel run from the previous endpoint
+
+# Channel-gap diagnostic: record the superoperator spectral gap every this many
+# oracle iterations (the O(n⁶) eigendecomposition is too costly per iteration).
+# Strides sized from the known iteration counts to give ~100-200 samples each.
+GAP_STRIDE = {"hinf12": 1, "hinf1": 20, "truss1": 200, "truss4": 250}
+GAP_STRIDE_DEFAULT = 100
 
 CALIB_TARGET_ITERS = 500       # calibration: aim for <= this many oracle iterations
 CALIB_SEARCH_STEPS = 18        # calibration: bisection depth (bracket shrinks 2^18×)
@@ -74,31 +82,51 @@ def build_problem(arrays: dict, g: float) -> PrimalOracleProblem:
     )
 
 
+def cycle_adjacency_from_permutation(pi: np.ndarray) -> np.ndarray:
+    """
+    Adjacency of the random cycle from Gilyén–Vazirani Appendix C, Definition 6
+    (arXiv:2011.09495): sample π on [n], connect i–j iff π(i) − π(j) ≡ ±1 (mod n).
+    """
+    pi = np.asarray(pi, dtype=np.intp)
+    n = pi.shape[0]
+    inv = np.empty(n, dtype=np.intp)
+    inv[pi] = np.arange(n)
+    adj = np.zeros((n, n), dtype=np.float64)
+    for i in range(n):
+        for step in (-1, 1):
+            j = int(inv[(int(pi[i]) + step) % n])
+            adj[i, j] = 1.0
+    return adj
+
+
+def random_cycle_adjacency(rng: np.random.Generator, n: int) -> np.ndarray:
+    """One independent uniformly random cycle (Definition 6) on vertex set [n]."""
+    pi = rng.permutation(n)
+    return cycle_adjacency_from_permutation(pi)
+
+
 def jump_matrices_from_arrays(arrays: dict) -> list[np.ndarray]:
     """
     Channel proposals = SDP objective + distinct constraint generators
-    + one dense GOE connector.
+    + two random-cycle connectors (Appendix C, Definition 6).
 
     The converted stack is [I, F_1, −F_1, F_2, −F_2, …]: the identity is
     skipped (after Bohr reweighing it is ∝ I and drives no transitions) and
     only the +F_i at odd indices are kept (−F_i shares its generator up to
     sign, which the channel's ÃᵀÃ structure makes irrelevant).
 
-    The dense random symmetric matrix (fixed-seed GOE sample) guarantees
-    ergodicity: the problem matrices alone can share a block-diagonal
-    sparsity pattern (hinf1: components {0–3}, {4–7}, {8–13}), which makes
-    each block's weight a conserved quantity and puts the channel's fixed
-    point permanently away from ρ (see BLOCK_DIAGONAL_ISSUE.md). A dense
-    connector couples every coordinate pair, so ρ becomes the unique fixed
-    point; detailed balance is untouched since the Bohr reweighing applies
-    to it like to any other jump.
-    """
+    Two independent random cycles (Gilyén–Vazirani arXiv:2011.09495, App. C,
+    Def. 6–7) replace the earlier dense GOE connector: each cycle is a sparse
+    2-regular graph on [n], and their union is the standard building block for
+    random regular expanders. This restores ergodicity when problem matrices
+    share a block-diagonal sparsity pattern (see BLOCK_DIAGONAL_ISSUE.md).
+  """
     A = arrays["A"]
     n = arrays["n"]
     rng = np.random.default_rng(0)          # fixed seed → reproducible channel
-    B = rng.standard_normal((n, n))
-    goe = (B + B.T) / np.sqrt(2.0)
-    return [arrays["C"]] + [A[k] for k in range(1, A.shape[0], 2)] + [goe]
+    cycle1 = random_cycle_adjacency(rng, n)
+    cycle2 = random_cycle_adjacency(rng, n)
+    return [arrays["C"]] + [A[k] for k in range(1, A.shape[0], 2)] + [cycle1, cycle2]
 
 
 # --- Objective threshold g ---
@@ -180,6 +208,32 @@ def plot_gibbs_steps(steps: list[int], instance: str, g: float, out_path: str) -
     plt.close(fig)
 
 
+def plot_channel_gap(gap_pairs: list[tuple[int, float]], instance: str, g: float,
+                     out_path: str) -> None:
+    """Spectral gap of the constructed channel vs oracle iteration (strided)."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    x = np.asarray([p[0] for p in gap_pairs], dtype=float)
+    y = np.asarray([p[1] for p in gap_pairs], dtype=float)
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+    ax.plot(x, y, color="#E07A5F", linewidth=1.2, alpha=0.6, zorder=1)
+    ax.scatter(x, y, s=14, color="#E07A5F", edgecolors="none", zorder=2)
+    ax.axhline(float(np.mean(y)), color="#3D405B", linestyle="--", linewidth=1.5,
+               label=f"mean = {float(np.mean(y)):.4f}")
+    ax.set_xlabel("Primal-oracle iteration")
+    ax.set_ylabel("Channel spectral gap  1 − |λ₂|")
+    ax.set_title(f"{instance}: channel gap per oracle iteration (g = {g:.4g}, ε = {EPSILON:g})")
+    ax.set_ylim(bottom=0.0)
+    ax.legend(loc="best")
+    ax.margins(x=0.01)
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=130)
+    plt.close(fig)
+
+
 # --- Driver ---
 
 def run_instance(name: str) -> dict:
@@ -201,16 +255,23 @@ def run_instance(name: str) -> dict:
         gibbs_jump_matrices=jump_matrices_from_arrays(arrays),
         gibbs_max_steps=GIBBS_MAX_STEPS,
         gibbs_warm_start=GIBBS_WARM_START,
+        gibbs_gap_stride=GAP_STRIDE.get(name, GAP_STRIDE_DEFAULT),
         return_on_exhaustion=True,
     )
     wall = time.perf_counter() - t0
 
     steps = result.gibbs_steps_per_iter
+    gaps = result.gibbs_gap_per_iter or []
+    gap_vals = [gp for _, gp in gaps]
     feasible = bool(result.constraint_diag.feasible_within_theta)
     print(f"[{name}] oracle iterations = {result.iterations}, feasible = {feasible}, "
           f"z = {result.z:.6g}")
     print(f"[{name}] Gibbs steps per iteration: mean = {np.mean(steps):.1f}, "
           f"max = {max(steps)}, all converged = {all(result.gibbs_converged_per_iter)}")
+    if gap_vals:
+        print(f"[{name}] channel gap ({len(gap_vals)} samples): "
+              f"first = {gap_vals[0]:.4f}, last = {gap_vals[-1]:.4f}, "
+              f"min = {min(gap_vals):.4f}")
     print(f"[{name}] wall time = {wall:.2f}s "
           f"(gibbs {result.timing['gibbs_time']:.1f}s of "
           f"{result.timing['total_wall_time']:.1f}s)")
@@ -232,6 +293,8 @@ def run_instance(name: str) -> dict:
         "gibbs_warm_start": GIBBS_WARM_START,
         "gibbs_steps_per_iter": [int(s) for s in steps],
         "gibbs_converged_per_iter": [bool(c) for c in result.gibbs_converged_per_iter],
+        "gap_stride": GAP_STRIDE.get(name, GAP_STRIDE_DEFAULT),
+        "channel_gap_per_iter": [[int(i), float(gp)] for i, gp in gaps],
         "timing": result.timing,
         "wall_time": wall,
     }
@@ -240,7 +303,10 @@ def run_instance(name: str) -> dict:
 
     plot_path = os.path.join(out_dir, "gibbs_steps_per_iteration.png")
     plot_gibbs_steps(steps, name, g, plot_path)
-    print(f"[{name}] wrote {out_dir}\\run.json and {plot_path}")
+    gap_plot_path = os.path.join(out_dir, "channel_gap_per_iteration.png")
+    if gaps:
+        plot_channel_gap(gaps, name, g, gap_plot_path)
+    print(f"[{name}] wrote {out_dir}\\run.json, {plot_path} and {gap_plot_path}")
 
     return {
         "instance": name,
@@ -249,6 +315,7 @@ def run_instance(name: str) -> dict:
         "feasible": feasible,
         "gibbs_steps_mean": float(np.mean(steps)),
         "gibbs_steps_max": int(max(steps)),
+        "gap_min": float(min(gap_vals)) if gap_vals else None,
         "wall_time_s": wall,
     }
 
@@ -267,11 +334,12 @@ def main() -> None:
 
     print("=== suite summary ===")
     print(f"{'instance':<12} {'n':>4} {'iters':>8} {'feasible':>8} "
-          f"{'mean_st':>8} {'max_st':>7} {'time_s':>8}")
+          f"{'mean_st':>8} {'max_st':>7} {'gap_min':>8} {'time_s':>8}")
     for s in summaries:
+        gap_txt = f"{s['gap_min']:.4f}" if s["gap_min"] is not None else "-"
         print(f"{s['instance']:<12} {s['n']:>4} {s['iterations']:>8} "
               f"{str(s['feasible']):>8} {s['gibbs_steps_mean']:>8.2f} "
-              f"{s['gibbs_steps_max']:>7} {s['wall_time_s']:>8.1f}")
+              f"{s['gibbs_steps_max']:>7} {gap_txt:>8} {s['wall_time_s']:>8.1f}")
     print(f"total wall time = {time.perf_counter() - t_suite:.1f}s")
 
     os.makedirs(RESULTS_DIR, exist_ok=True)

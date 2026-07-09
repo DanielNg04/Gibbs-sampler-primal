@@ -5,8 +5,8 @@ Primal-oracle feasibility loop with exact or MCMC Gibbs preparation
 (``gibbs_sampler_quantum_v4self``).
 
 VSelf conventions:
-- Every matrix is real symmetric float64. Inputs are symmetrized once at the
-  boundary (``prepare_matrix``) and trusted everywhere after — no repeated
+- Every matrix is real symmetric float64. Inputs are validated once at the
+  boundary (``validate_matrix``) and trusted everywhere after — no repeated
   shape/symmetry assertions, no complex handling.
 - The oracle answers: is there X ⪰ 0 with Tr(A_j X) ≤ b_j (A_1 = I, b_1 = R)
   and Tr(CX) ≥ g? It maintains dual-style weights y ≥ 0, prepares the Gibbs
@@ -28,8 +28,8 @@ import scipy.linalg as la
 from gibbs_sampler_quantum_v4self import (
     QuantumGibbsSampler,
     jumps_from_symmetric_matrices,
-    prepare_matrix,
     trace_distance,
+    validate_matrix,
 )
 
 DTYPE = np.float64
@@ -52,9 +52,10 @@ class PrimalOracleProblem:
     R: float                       # trace bound (= b_1)
     g: float                       # objective threshold; b_0 = −g for A_0 = −C
 
+    #Checks, corrections
     def __post_init__(self) -> None:
-        self.C = prepare_matrix(self.C)
-        self.A_matrices = [prepare_matrix(A) for A in self.A_matrices]
+        self.C = validate_matrix(self.C)
+        self.A_matrices = [validate_matrix(A) for A in self.A_matrices]
         self.b = np.asarray(self.b, dtype=DTYPE).reshape(-1)
         self.R = float(self.R)
         self.g = float(self.g)
@@ -95,6 +96,9 @@ class PrimalOracleResult:
     cutoff_trace_distance_per_iter: Optional[dict[int, List[float]]] = None
     """MCMC + cutoffs: per cutoff c, D(σ_cutoff, σ_full) at each iteration."""
 
+    gibbs_gap_per_iter: Optional[List[tuple[int, float]]] = None
+    """MCMC + gap stride: (iteration, spectral gap of the constructed channel)."""
+
 
 # --- Gibbs state from the exponent matrix (exact mode + embedding corner) ---
 
@@ -128,11 +132,31 @@ def gibbs_state_n_from_exponent(M: np.ndarray) -> tuple[np.ndarray, float]:
     p = np.exp(-(w - float(w[0])))          # eigh returns ascending eigenvalues
     probs = p / float(np.sum(p))
     rho_n = (U * probs) @ U.T
-    return (rho_n + rho_n.T) * 0.5, _omega_from_energies(w)
+    return rho_n, _omega_from_energies(w)
+
+
+# --- Channel diagnostics (MCMC mode) ---
+
+def _channel_spectral_gap(kraus_stack: np.ndarray) -> float:
+    """
+    Spectral gap |λ₁| − |λ₂| of the channel superoperator S = Σ_a A_a ⊗ A_a.
+
+    λ₁ = 1 belongs to the fixed point; the gap bounds the per-step contraction
+    of everything orthogonal to it, so it is the channel's asymptotic mixing
+    rate. Building S is O(q d⁴) and its eigenvalues O(d⁶) — this is a pure
+    diagnostic for small instances, computed only every ``gibbs_gap_stride``
+    iterations, never part of the solver hot path.
+    """
+    q1, d = kraus_stack.shape[0], kraus_stack.shape[1]
+    S = np.zeros((d * d, d * d), dtype=DTYPE)
+    for a in range(q1):
+        S += np.kron(kraus_stack[a], kraus_stack[a])
+    moduli = np.abs(la.eigvals(S, check_finite=False))
+    moduli.sort()
+    return float(moduli[-1] - moduli[-2])
 
 
 # --- Feasibility test ---
-
 def constraint_traces_from_stack(Xp: np.ndarray, A_stack: np.ndarray) -> np.ndarray:
     """
     All Tr(A_j X') at once as Frobenius inner products — O(m n²).
@@ -154,7 +178,7 @@ def _constraint_diagnostics_from_traces(
 ) -> ConstraintDiagnostics:
     violations = traces - b_tilde
     j_max = int(np.argmax(violations))
-    feasible = float(violations[j_max]) <= theta + 1e-15
+    feasible = float(violations[j_max]) <= theta 
     return ConstraintDiagnostics(
         traces=traces,
         bounds_tilde=b_tilde,
@@ -182,7 +206,7 @@ def _select_violation_index(
         return None
     if selection == "max":
         return diag.max_violation_index
-    violated = np.flatnonzero(-diag.slacks > theta + 1e-15)
+    violated = np.flatnonzero(-diag.slacks > theta)
     return int(violated[rng.integers(violated.size)])
 
 
@@ -200,6 +224,7 @@ def run_primal_oracle(
     gibbs_step_cutoffs: Optional[Sequence[int]] = None,
     gibbs_target_theta: Optional[float] = None,
     gibbs_warm_start: bool = False,
+    gibbs_gap_stride: Optional[int] = None,
     normalize_jumps: bool = True,
     violation_selection: str = "max",
     violation_rng_seed: Optional[int] = None,
@@ -226,6 +251,10 @@ def run_primal_oracle(
         MCMC only: start each channel run from the previous iteration's
         endpoint instead of I/n. Consecutive exponents differ by one rank-one
         update, so their Gibbs states are close and mixing restarts warm.
+    gibbs_gap_stride:
+        MCMC only: every this many iterations, record the spectral gap of the
+        freshly constructed channel (O(n⁶) diagnostic — see
+        :func:`_channel_spectral_gap`); results land in ``gibbs_gap_per_iter``.
     return_on_exhaustion:
         If the iteration cap is hit without θ-feasibility, return the last
         state (feasible_within_theta=False) instead of None, preserving the
@@ -265,7 +294,7 @@ def run_primal_oracle(
     # Paper schedule: ceil(ln n / θ²) iterations suffice when g is feasible.
     theta = epsilon / (2.0 * problem.R)
     gibbs_theta = float(gibbs_target_theta) if gibbs_target_theta is not None else theta
-    default_iters = int(np.ceil(np.log(max(n, 2)) / theta**2))
+    default_iters = int(np.ceil(np.log(n) / theta**2))
     iters = default_iters if max_iterations is None else int(max_iterations)
 
     y = np.zeros(m1, dtype=DTYPE)
@@ -288,6 +317,8 @@ def run_primal_oracle(
     gibbs_steps_per_iter: List[int] = []
     gibbs_converged_per_iter: List[bool] = []
     cutoff_td_per_iter: dict[int, List[float]] = {c: [] for c in cutoffs}
+    gap_stride = int(gibbs_gap_stride) if (use_mcmc and gibbs_gap_stride) else 0
+    gibbs_gap_per_iter: List[tuple[int, float]] = []
 
     def _package(rho_n: np.ndarray, omega: float, diag: ConstraintDiagnostics, iters_done: int) -> PrimalOracleResult:
         # X' = (1 − ω) ρ_n is only materialized here, at termination; the loop
@@ -316,6 +347,7 @@ def run_primal_oracle(
             cutoff_trace_distance_per_iter=(
                 {c: cutoff_td_per_iter[c] for c in cutoffs} if cutoffs else None
             ),
+            gibbs_gap_per_iter=gibbs_gap_per_iter if gap_stride else None,
         )
 
     last_state: Optional[tuple[np.ndarray, float, ConstraintDiagnostics]] = None
@@ -328,6 +360,13 @@ def run_primal_oracle(
             if timing is not None:
                 timing["gibbs_construction_time"] += time.perf_counter() - tc0
 
+            # Diagnostic: gap of this iteration's channel, on a stride so the
+            # O(n⁶) eigendecomposition never dominates the run.
+            if gap_stride and it % gap_stride == 0:
+                gibbs_gap_per_iter.append(
+                    (it + 1, _channel_spectral_gap(sampler.kraus_stack))
+                )
+
             conv = sampler.run_until_converged(
                 sigma0,
                 target_trace_distance=gibbs_theta,
@@ -338,7 +377,7 @@ def run_primal_oracle(
                 timing["gibbs_channel_iteration_time"] += conv.timing["channel_apply_time"]
                 timing["gibbs_convergence_check_time"] += conv.timing["convergence_check_time"]
 
-            rho_n = conv.converged_state          # already symmetric float64
+            rho_n = conv.converged_state          
             omega = _omega_from_energies(sampler.energies)
 
             if gibbs_warm_start:
