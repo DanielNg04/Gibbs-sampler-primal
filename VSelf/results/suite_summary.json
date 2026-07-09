@@ -1,0 +1,42 @@
+[
+  {
+    "instance": "hinf12",
+    "n": 24,
+    "iterations": 100,
+    "feasible": true,
+    "gibbs_steps_mean": 43.93,
+    "gibbs_steps_max": 82,
+    "gap_min": 0.0002277889333871519,
+    "wall_time_s": 15.77072390000103
+  },
+  {
+    "instance": "hinf1",
+    "n": 14,
+    "iterations": 3237,
+    "feasible": true,
+    "gibbs_steps_mean": 0.5168365770775409,
+    "gibbs_steps_max": 12,
+    "gap_min": 0.009630601115510284,
+    "wall_time_s": 5.603757800010499
+  },
+  {
+    "instance": "truss1",
+    "n": 13,
+    "iterations": 30648,
+    "feasible": true,
+    "gibbs_steps_mean": 0.834899504045941,
+    "gibbs_steps_max": 113,
+    "gap_min": 0.003032393775625808,
+    "wall_time_s": 23.732789599976968
+  },
+  {
+    "instance": "truss4",
+    "n": 19,
+    "iterations": 40840,
+    "feasible": true,
+    "gibbs_steps_mean": 0.7430215475024485,
+    "gibbs_steps_max": 56,
+    "gap_min": 0.0033209804513060215,
+    "wall_time_s": 44.37673999997787
+  }
+]

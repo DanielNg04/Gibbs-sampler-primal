@@ -12,6 +12,9 @@ venv/
 results/
 Results*/
 results_*/
+# Track VSelf benchmark JSON (negations must follow the rules above)
+!VSelf/results/
+!VSelf/results/**
 # OS
 Thumbs.db
 .DS_Store
