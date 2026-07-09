@@ -201,7 +201,7 @@ class QuantumGibbsSampler:
 
         ev_D = la.eigvalsh(D_E, check_finite=False)
         lam_max = float(ev_D[-1])
-        target = max(0.0, 1.0 - float(rescale_margin))
+        target = 1.0 - float(rescale_margin)
         if lam_max > target:
             c = math.sqrt(target / lam_max)
             accept_E *= c
