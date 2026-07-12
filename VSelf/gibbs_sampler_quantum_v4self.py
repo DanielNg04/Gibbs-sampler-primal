@@ -240,7 +240,8 @@ class QuantumGibbsSampler:
 
         #6. One contiguous Kraus stack (accept ops + reject op), rotated back
         # to the input basis with two batched GEMMs. A single C-contiguous block
-        # lets _apply_channel_fast run the whole channel as batched BLAS calls.
+        # keeps every A_a slice cache-friendly for the per-Kraus dgemm loop in
+        # _apply_channel_fast.
         kraus_E = np.concatenate([accept_E, K_E[None, :, :]], axis=0)
         self.kraus_stack = np.ascontiguousarray(U @ kraus_E @ U.T, dtype=DTYPE)
         self.accept_kraus = self.kraus_stack[:q]
@@ -258,27 +259,30 @@ class QuantumGibbsSampler:
 
     def _apply_channel_fast(self, sigma: np.ndarray, symmetrize_output: Optional[bool] = None) -> np.ndarray:
         """
-        M[σ] = Σ_a A_a σ A_aᵀ + K σ Kᵀ — the hot loop, as two BLAS-bound steps:
+        M[σ] = Σ_a A_a σ A_aᵀ + K σ Kᵀ — the hot loop, one Kraus operator at a
+        time: ``out += (A_a @ σ) @ A_a.T``, i.e. 2(q+1) plain dgemm calls.
 
-        1. ``tmp = kraus_stack @ σ``: a batched GEMM, (q+1) independent d×d
-           multiplies dispatched straight to multithreaded dgemm.
-        2. ``tensordot(tmp, kraus_stack, axes=([0, 2], [0, 2]))``: contracts both
-           the Kraus index and the inner matrix index in ONE large GEMM of shape
-           (d, (q+1)d)·((q+1)d, d). out[i,k] = Σ_{a,j} (A_a σ)[i,j]·A_a[k,j],
-           i.e. exactly Σ_a A_a σ A_aᵀ, with the accumulation over Kraus
-           operators fused into the GEMM.
+        Memory: only O(d²) transient temporaries, versus ~3·(q+1)·d² for the
+        earlier fused-tensordot formulation — the loop is what makes large
+        instances feasible. ``A_a.T`` is a view that BLAS consumes via its
+        transpose flag (no copy), so nothing stack-sized is ever re-transposed
+        per call. Speed: each d×d dgemm is already compute-bound for d ≳ 50,
+        where this loop also *beats* the fused GEMM (which was bandwidth-bound
+        on its transpose copies); below that the difference is microseconds.
 
-        Stability: every product is a plain GEMM (componentwise backward stable);
-        the Kraus structure maps symmetric input to symmetric output up to O(eps)
-        rounding. The optional per-step symmetrization (the only place in this
-        module that repairs instead of validates) resets that rounding asymmetry
-        so it cannot accumulate over long channel iterations.
+        Stability: every product is a plain GEMM (componentwise backward stable)
+        and the accumulation ``out +=`` sums q+1 PSD contributions — no
+        cancellation. The Kraus structure maps symmetric input to symmetric
+        output up to O(eps) rounding. The optional per-step symmetrization (the
+        only place in this module that repairs instead of validates) resets that
+        rounding asymmetry so it cannot accumulate over long channel iterations.
         """
         if symmetrize_output is None:
             symmetrize_output = self.symmetrize_output
         sigma = np.ascontiguousarray(sigma, dtype=DTYPE)
-        tmp = self.kraus_stack @ sigma
-        out = np.tensordot(tmp, self.kraus_stack, axes=([0, 2], [0, 2]))
+        out = np.zeros_like(sigma)
+        for A in self.kraus_stack:
+            out += (A @ sigma) @ A.T
         return (out + out.T) * 0.5 if symmetrize_output else out
 
     def apply_channel(self, sigma: np.ndarray, check: bool = False) -> np.ndarray:
